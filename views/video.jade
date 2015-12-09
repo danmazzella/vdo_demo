@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  .pageTitle
+    | Video Stream Example
+  .form
+    .description    
+      |  Provide a stream URL and click submit.
+    .inputs
+      form(method="POST", action="/video", class="frmVideo")
+        .videoDiv
+          input(type="text", class="videoFile", id="txtVideoUrl", name="txtVideoUrl", placeholder="Video Url (Image Snapshot)")
+        .upload-file
+          input(type="submit", value="SUBMIT", class="videoButton").submit-video-button
+          input(type="button", value="RESET VIDEO", class="resetVideoButton").reset-video-button  
+
+  if (results) 
+    .image
+      - var placeholder = "/images/placeholder.jpg";
+      input(type="hidden", id="hidVidoeImageUrl", value="#{videoImageUrl}")
+      img(src="#{!videoImageUrl ? placeholder : videoImageUrl }", id="rtVideo")

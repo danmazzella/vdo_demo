@@ -1,0 +1,56 @@
+extends layout
+
+block content
+  .pageTitle 
+    | Image Upload
+  .form
+    .description
+      | Choose an image to upload and then click upload file. </br>
+      | We will process and show you the image and detections below.
+    .inputs
+      form(method="POST", action="/index", enctype="multipart/form-data")
+        .file
+          | No File Chosen
+        input(type="file", name="photo", id="photo")
+        .upload-file    
+          input(type="submit", value="UPLOAD FILE", class="submit-button")  
+
+  if (results) 
+    .image
+      .text
+        p #{boxCount} IDENTIFIED
+      .canvas
+        canvas(id="canvas", name="canvas")
+      .img
+        - var placeholder = "/images/placeholder.jpg";
+        img(src="#{!image ? placeholder : image}", id="uploadedImage") 
+        input(type="hidden", id="boxes", value="#{boxes}")
+        input(type="hidden", id="boxCount", value="#{boxCount}")
+          
+  // .jumbotron
+  //   h1 Image Upload Example
+  //   p
+  //     
+  //   p Choose an image to upload and then click upload file..
+  //   p We will process and show you the image and detections below.
+  //   p
+  //   if (error) 
+  //     .error
+  //       | #{error}
+  //   form(method="POST", action="/index", enctype="multipart/form-data")
+  //     
+  //     input(type="file", name="photo")
+  //     p
+  //     input(type="submit", value="Upload File").btn.btn-lg.btn-primary 
+  //   
+  // if (results) 
+  //   .image
+  //     .text
+  //       p #{boxCount} IDENTIFIED
+  //     .canvas
+  //       canvas(id="canvas", name="canvas")
+  //     .img
+  //       - var placeholder = "/images/placeholder.jpg";
+  //       img(src="#{!image ? placeholder : image}", id="uploadedImage") 
+  //       input(type="hidden", id="boxes", value="#{boxes}")
+  //       input(type="hidden", id="boxCount", value="#{boxCount}")
