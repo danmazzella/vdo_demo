@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  .pageTitle
+    | Login
+  .form
+    .description    
+      |  Please provide your access code.
+    .inputs
+      form(method="POST", action="/login", class="frmLogin")
+        .videoDiv
+          input(type="password", class="videoFile", id="username", name="username", placeholder="Please Enter Passcode")
+          input(type="hidden", name="password", value="na")
+        .upload-file
+          input(type="submit", value="LOGIN", class="loginButton").submit-login-button  

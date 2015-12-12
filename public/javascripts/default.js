@@ -75,6 +75,8 @@ $(function() {
 				case '/help':
 					$("#3").addClass('active');
 					break;
+				case '/login':
+					break;
 				default: 
 					$("#1").addClass('active');
 					break;
