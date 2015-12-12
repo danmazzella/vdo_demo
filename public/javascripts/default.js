@@ -23,15 +23,22 @@ $(function() {
 			}
 		});
 		
-		var vidTimer;
+		var vidTimer, tenMinutes = 0;
+		
+		function endVideo() {
+			clearInterval(vidTimer);
+		}
+		
 		function startVideo() {
 			
 			$(".videoButton").attr("disabled", "").css("opacity", ".5");
 			var rtVid = $("#rtVideo");
 			
 			vidTimer = setInterval(function() {
-				rtVid.attr("src",$("#hidVidoeImageUrl").val() + "?" + Math.random());
 				
+				if (tenMinutes >= (60000 * 1)) endVideo();				
+				rtVid.attr("src",$("#hidVidoeImageUrl").val() + "?" + Math.random());
+				tenMinutes += 200;	
 			}, 200);
 		}
 		
