@@ -23,10 +23,12 @@ $(function() {
 			}
 		});
 		
-		var vidTimer, tenMinutes = 0;
-		
+		var vidTimer, tenMinutes = 0;		
 		function endVideo() {
+			
 			clearInterval(vidTimer);
+			tenMinutes = 0;
+			$(".resetVideoButton").trigger("click");
 		}
 		
 		function startVideo() {
@@ -36,7 +38,8 @@ $(function() {
 			
 			vidTimer = setInterval(function() {
 				
-				if (tenMinutes >= (60000 * 1)) endVideo();				
+				if (tenMinutes >= (1000 * 60 * 10)) endVideo();
+				console.log(tenMinutes);				
 				rtVid.attr("src",$("#hidVidoeImageUrl").val() + "?" + Math.random());
 				tenMinutes += 200;	
 			}, 200);
