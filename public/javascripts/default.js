@@ -31,6 +31,11 @@ $(function() {
 			$(".resetVideoButton").trigger("click");
 		}
 		
+        window.onbeforeunload = function () {
+            endVideo();
+        }
+            
+        
 		function startVideo() {
 			
 			$(".videoButton").attr("disabled", "").css("opacity", ".5");
