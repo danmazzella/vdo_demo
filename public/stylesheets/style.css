@@ -34,7 +34,7 @@ a {
   border-radius: 6px;
   min-height: 500px;
   min-width: 1200px;
-} 
+ } 
 
 
 .text {
@@ -44,12 +44,12 @@ a {
 }
 
 .error {
+ 
   padding:25px;
-  background:red;
-  color:#fff;
+  color:red;
   font-size: 19px;
-  margin-top: 10px;
-  margin-bottom:10px;
+  margin-top: 50px;
+  margin-bottom:0px;
 }
 
 .btn {margin-right: 10px;}
@@ -190,3 +190,8 @@ input[type=file] {
   cursor: pointer;
   border:0px;
 }
+
+IMG.displayed {
+    display: block;
+    margin-left: auto;
+    margin-right: auto }

@@ -23,54 +23,114 @@ $(function() {
 			}
 		});
 		
-		var vidTimer, tenMinutes = 0;		
-		function endVideo() {
+		var vidTimer
+        var tenMinutes = 0;	
+        var healthCheck = null;
+        var healthCheckFailCnt = 0;
+        var showHealth = true;
+        var healthCheckFailCntMax = 10;
+        	
+
+		
+        window.onbeforeunload = function () { endVideo();}
+        function endHealthCheck() { clearInterval(healthCheck); $(".error").html(""); showHealth=false}    
+		$(".file").bind("click", function() { $("#photo").trigger("click");});
+                
+		function startVideo() {
+			
+			$(".videoButton").attr("disabled", "").css("opacity", ".5");
+			var rtVid = $("#rtVideo");
+		    startHealthCheck($("#txtVideoUrl").val());
+              
+			vidTimer = setInterval(function() {
+				
+				if (tenMinutes >= (1000 * 60 * 10)) endVideo();
+								
+				if (showHealth) rtVid.attr("src",$("#hidVidoeImageUrl").val() + "?" + Math.random());
+				tenMinutes += 200;	
+                
+ 			}, 200);
+		}
+		
+        function endVideo() {
 			
 			clearInterval(vidTimer);
 			tenMinutes = 0;
 			$(".resetVideoButton").trigger("click");
 		}
-		
-        window.onbeforeunload = function () {
-            endVideo();
-        }
-            
-        
-		function startVideo() {
-			
-			$(".videoButton").attr("disabled", "").css("opacity", ".5");
-			var rtVid = $("#rtVideo");
-			
-			vidTimer = setInterval(function() {
-				
-				if (tenMinutes >= (1000 * 60 * 10)) endVideo();
-				console.log(tenMinutes);				
-				rtVid.attr("src",$("#hidVidoeImageUrl").val() + "?" + Math.random());
-				tenMinutes += 200;	
-			}, 200);
-		}
-		
+        		
 		if ( $("#hidVidoeImageUrl").val()) {
-
-			startVideo();
+            
+            var rtVid = $("#rtVideo");
+            rtVid.attr("src", '/images/loading_wizr.gif');
+            setTimeout(function() {startVideo();}, 5000);
+			
 		}
-		
+        
+        function updateHealthCheck(mode, msg) {
+            
+            
+            
+            if (mode === "update")  {
+                $(".error").css("color", "red");
+                healthCheckFailCnt++;
+                
+                if (healthCheckFailCnt === healthCheckFailCntMax) {
+                    if(showHealth) $(".error").html("The camera stream is unavailable or the camera can not be found");
+                    showHealth = false;
+                    endVideo();   
+                }
+                    
+            } else {
+                if(showHealth) $(".error").html(msg);
+                $(".error").css("color", "green");
+                healthCheckFailCnt = 0;
+            }
+        }
+        
+        function startHealthCheck(url) {
+            
+            
+            healthCheck = setInterval(function() {
+                $.post("/video/health", {videoUrl:url}, function(data, b, c) {
+
+                    if (data.error || data.results === false) {
+
+                        updateHealthCheck("update", data.error);
+                    } else {
+                        
+                        updateHealthCheck(null, "Streaming: " + url);
+                    }
+                    
+                }).fail(function(a,b,c) {
+                    
+                    updateHealthCheck("update", a.statusText);                    
+                });
+                
+            }, 2000);
+        }
+        
 		$(".resetVideoButton").bind("click", function() {
 
 			clearInterval(vidTimer);
-			
+            
+            var rtVid = $("#rtVideo");
+            
+            endHealthCheck();
+            rtVid.attr("src", '');
+            			
 			$.get("/video/reset", function(data) {
+                
 				$(".videoButton").removeAttr("disabled").css("opacity", 1);
 				console.log(data);
 			});
 			
 		});
 		
-		$(".file").bind("click", function() {
-			$("#photo").trigger("click");
-		});
+
 		
 		$("#photo").bind("change", function() {
+            
 			var file = $(this).val().split("\\");
 			$(".file").html(" ... " + file[file.length -1]);
 		});
@@ -101,17 +161,14 @@ $(function() {
 
 		var gnit = function() {
 		
-		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-		
-		ga('create', 'UA-71043732-1', 'auto');
-		ga('send', 'pageview');
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+            
+            ga('create', 'UA-71043732-1', 'auto');
+            ga('send', 'pageview');
 
 		}();
-
-
-
 	});
 }); 
