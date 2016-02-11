@@ -7,6 +7,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var multer  = require('multer');
+var FileSystem = require('fs');
+var CameraChecker = require("./wrapper/camera-checker")
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -127,12 +129,6 @@ function getInstance(type, partnerId) { // partner id not yet supported (will be
   }
 }
 
-
-
-
-
-
-
 // Main and image
 app.get('/', require('connect-ensure-login').ensureLoggedIn(), function(req, res, next) {
   
@@ -196,26 +192,75 @@ app.get('/video', require('connect-ensure-login').ensureLoggedIn(), function(req
 app.get("/video/reset", require('connect-ensure-login').ensureLoggedIn(), function(req, res) {
   
   killInstance(ProcessWrapper.ProcessType.Video);
-  // if (videoWrapper.running) 
-  //   videoWrapper.kill();
-    
+  
+  var imgPath = __dirname + "\\uploads\\demourl.jpg";
+  // Remove image 
+  try {
+      
+    FileSystem.stat(imgPath, function(err, stat) {
+        
+        if (err === null) {
+            
+            FileSystem.unlinkSync(imgPath);
+        }
+        
+    });
+
+  } catch(e) {
+      
+      console.log(e);
+  }  
+
   return res.send({success:true});
   
 });
 
+
 app.post('/video', require('connect-ensure-login').ensureLoggedIn(), function (req, res, next) {
   
-  if (!req.body.txtVideoUrl)
+  var videoUrl = req.body.txtVideoUrl;
+  
+  if (!videoUrl)
     return res.render("video", {error: "Invalid Video Url"});
-  
-  videoWrapper.run(req.body.txtVideoUrl, function(err, results)  {   
- 
-    var streamUrl = "/uploads/demourl.jpg";
     
-    return res.render("video", {results:true, videoImageUrl : streamUrl});  
-  });
-  
+  CameraChecker.validateCamera({url :videoUrl}, function(err, r, t) {
+    
+    if (err) {
+        return res.render("video", {results : false, error: err});
+    }  
+      
+    videoWrapper.run(req.body.txtVideoUrl, function(err, results)  {   
+    
+        var streamUrl = "/uploads/demourl.jpg";
+        
+        if (err) {
+            
+            killInstance(ProcessWrapper.ProcessType.Video);
+             return res.render("video", {results : false, error: err});
+             
+        }
+        
+        return res.render("video", {results:true, videoImageUrl : streamUrl, isError:false, videoUrl : videoUrl});  
+    });      
+  });  
 });
+
+app.post('/video/health', require('connect-ensure-login').ensureLoggedIn(), function (req, res, next) { 
+    
+  var videoUrl = req.body.videoUrl;
+  if (!videoUrl)
+    return res.send({error: "Invalid Video Url"});
+  
+  CameraChecker.validateCamera({url :videoUrl}, function(err, r, t) {
+    
+    if (err) {
+        return res.send({results : false, error: "The camera stream is unavailable or the camera can not be found"});
+    }  
+      
+    return res.send({results:true});  
+  });  
+    
+});    
 
 app.get('/help', function(req, res, next) {
   
