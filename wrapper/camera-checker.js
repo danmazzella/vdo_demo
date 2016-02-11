@@ -11,7 +11,7 @@ var url = require('url');
             
             UrlUtils.validateCameraStreamUrl({url: params.url}, callback);    
         } else if (params.url.substring(0, 4).toLowerCase() === "rtsp") {
-            
+            return callback("RTSP is not currently supported on this demo.", null, null);
             UrlUtils.validateCameraRTSPAddress({url: params.url}, callback);
         } else {
             

@@ -63,15 +63,19 @@ ProcessWrapper.prototype.run = function(file, cb) {
 		console.log("Exit (" + exitCode + ")");
 	});
 	
-	
-	this.childProcess.stdin.write(file + "\n", function(err) {
-		inst.childProcess.stdin.end();	
-		if (inst.args.noResult) {
-			inst.running = true;
-			return cb();	
-		}
-		
-	});
+	try {
+        this.childProcess.stdin.write(file + "\n", function(err) {
+            inst.childProcess.stdin.end();	
+            if (inst.args.noResult) {
+                inst.running = true;
+                return cb();	
+            }
+            
+        });
+    } catch (e) {
+           
+        return cb(e);
+    }
 
 };
 
