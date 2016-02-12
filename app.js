@@ -166,6 +166,8 @@ app.post('/index', upload.single('photo'), require('connect-ensure-login').ensur
   
   imageWrapper.run(image_props.outputFolder + file, function(err, results)  {   
  
+  if (err) return res.render('index', {title: "WiZR Analytics Demo", error: "An Error Occured", isError: true});
+  
   results = JSON.parse(results);
   results.image = img;
   return res.render('index', { title: 'WiZR Analytics Demo', 

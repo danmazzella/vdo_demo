@@ -67,6 +67,11 @@ $(function() {
 			
 		}
         
+        $("#imgForm").bind("submit", function() {
+            $(".submit-button").attr("disabled", "true");            
+        });
+        
+        
         function updateHealthCheck(mode, msg) {
             
             

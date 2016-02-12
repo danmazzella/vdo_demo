@@ -8,13 +8,15 @@ block content
       | Choose an image to upload and then click upload file. </br>
       | We will process and show you the image and detections below.
     .inputs
-      form(method="POST", action="/index", enctype="multipart/form-data")
+      form(method="POST", action="/index", enctype="multipart/form-data", id="imgForm")
         .file
           | No File Chosen
         input(type="file", name="photo", id="photo")
         .upload-file    
           input(type="submit", value="UPLOAD FILE", class="submit-button")  
-
+    .error
+        | #{error}
+       input(type="hidden", value="#{isError}")     
   if (results) 
     .image
       .text
