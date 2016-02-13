@@ -81,9 +81,9 @@ app.post('/login',
 console.log(ProcessWrapper.ProcessType);
 
 var image_props = {
-   outputFolder : "C:\\users\\wizr-demo\\documents\\projects\\py-faster-rcnn\\vdo_stone\\uploads\\",
+   outputFolder : "C:\\wizr_demo\\vdo_demo\\uploads\\",
    executable : 'python',
-   execFile:  "C:\\users\\wizr-demo\\documents\\projects\\py-faster-rcnn\\tools\\demo1.py", 
+   execFile:  "c:\\wizr_demo\\py-faster-rcnn\\tools\\demo1.py", 
    args : {
      noResult : false
    },
@@ -91,9 +91,9 @@ var image_props = {
 };
 
 var video_props = {
-   outputFolder : "C:\\users\\wizr-demo\\documents\\projects\\py-faster-rcnn\\vdo_stone\\uploads\\",
+   outputFolder : "C:\\wizr_demo\\vdo_demo\\uploads\\",
    executable : 'python',
-   execFile:  "C:\\users\\wizr-demo\\documents\\projects\\py-faster-rcnn\\tools\\demo3.py", 
+   execFile:  "c:\\wizr_demo\\py-faster-rcnn\\tools\\demo3.py", 
    args : {
      noResult : true
    },
@@ -157,12 +157,17 @@ app.get('/index', require('connect-ensure-login').ensureLoggedIn(), function(req
 
 app.post('/index', upload.single('photo'), require('connect-ensure-login').ensureLoggedIn(), function (req, res, next) {
 
+    var supportedTypes = ['.jpg', '.jpeg', '.png', '.bmp'];
+    
   if(!req.file || !req.file.size)
     return res.render('index', { error: 'No Image Selected' });
 
-
   var file = req.file.filename;
   var img = "/uploads/" + file;
+  var idx = supportedTypes.indexOf(require('path').extname(file).toLowerCase());
+  
+  if (idx < 0)
+    return res.render('index', { error: 'Format not supported. We currently support .jpg, .jpeg, .png and .bmp in this demo.' }); 
   
   imageWrapper.run(image_props.outputFolder + file, function(err, results)  {   
  

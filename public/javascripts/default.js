@@ -62,6 +62,7 @@ $(function() {
 		if ( $("#hidVidoeImageUrl").val()) {
             
             var rtVid = $("#rtVideo");
+            $(".videoButton").attr("disabled", "").css("opacity", ".5");
             rtVid.attr("src", '/images/loading_wizr.gif');
             setTimeout(function() {startVideo();}, 5000);
 			
@@ -70,6 +71,16 @@ $(function() {
         $("#imgForm").bind("submit", function() {
             $(".submit-button").attr("disabled", "true");            
         });
+
+        
+        $(".videoButton").bind("click", function(evt) {  
+            $("#frmVideo").submit();
+            $("#frmVideo").submit(function(evt) {
+                $(".videoButton").attr("disabled", "");
+                return true;
+            });            
+        });
+        
         
         
         function updateHealthCheck(mode, msg) {

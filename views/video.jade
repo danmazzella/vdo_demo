@@ -7,11 +7,11 @@ block content
     .description    
       |  Provide a stream URL and click submit.
     .inputs
-      form(method="POST", action="/video", class="frmVideo")
+      form(method="POST", action="/video", class="frmVideo", id="frmVideo")
         .videoDiv
           input(type="text", class="videoFile", id="txtVideoUrl", name="txtVideoUrl", placeholder="Video Url (Image Snapshot)", value="#{!videoUrl ? '' : videoUrl}")
         .upload-file
-          input(type="submit", value="SUBMIT", class="videoButton").submit-video-button
+          input(type="button", value="SUBMIT", class="videoButton" ).submit-video-button
           input(type="button", value="RESET VIDEO", class="resetVideoButton").reset-video-button  
     .error
         | #{error}
