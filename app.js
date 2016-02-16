@@ -15,7 +15,10 @@ var storage = multer.diskStorage({
     cb(null, __dirname + '/uploads');
   },
   filename: function (req, file, cb) {
-    cb(null, file.originalname);
+
+      var name =  String(Math.random()).split(".")[1] + require('path').extname(file.originalname)
+      console.log(name);
+    cb(null, name);
   }
 });
 
@@ -35,7 +38,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(__dirname + '/uploads'));
-app.use(require('express-session')({ secret: 'keyboard cat', resave: false, saveUninitialized: false })); 
+app.use(require('express-session')({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
 
 passport.use(new Strategy(
   function(username, password, cb) {
@@ -46,7 +49,7 @@ passport.use(new Strategy(
       return cb(null, user);
     });
   }));
-  
+
 passport.serializeUser(function(user, cb) {
   cb(null, user.id);
 });
@@ -65,15 +68,15 @@ app.use('/', routes);
 var instances = [];
 
 app.get('/login', function(req, res, next) {
-  
+
   res.render('login', { title: 'WiZR Demo' });
 });
 
-  
-app.post('/login', 
+
+app.post('/login',
   passport.authenticate('local', { failureRedirect: '/login' }),
   function(req, res) {
-    
+
     console.log('something');
     res.redirect('/');
   });
@@ -83,7 +86,7 @@ console.log(ProcessWrapper.ProcessType);
 var image_props = {
    outputFolder : "C:\\wizr_demo\\vdo_demo\\uploads\\",
    executable : 'python',
-   execFile:  "c:\\wizr_demo\\py-faster-rcnn\\tools\\demo1.py", 
+   execFile:  "c:\\wizr_demo\\py-faster-rcnn\\tools\\demo1.py",
    args : {
      noResult : false
    },
@@ -93,7 +96,7 @@ var image_props = {
 var video_props = {
    outputFolder : "C:\\wizr_demo\\vdo_demo\\uploads\\",
    executable : 'python',
-   execFile:  "c:\\wizr_demo\\py-faster-rcnn\\tools\\demo3.py", 
+   execFile:  "c:\\wizr_demo\\py-faster-rcnn\\tools\\demo3.py",
    args : {
      noResult : true
    },
@@ -101,29 +104,29 @@ var video_props = {
 };
 
 var partners = [1, 2];
- 
+
 var imageWrapper = new ProcessWrapper(image_props);
 var videoWrapper = new ProcessWrapper(video_props);
 
 instances.push(imageWrapper, videoWrapper);
 
 function killInstance(type, partnerId) {
-  
+
   var i = 0, instance;
-  
+
   for(i; i < instances.length; i++) {
-  
+
     instance = instances[i];
     if (instance.processType == type && instance.running) instance.kill();
-  }  
+  }
 }
 
 function getInstance(type, partnerId) { // partner id not yet supported (will be refactoring soon)
-  
+
   var i = 0, instance;
-  
+
   for (i; i < instances.length; i++) {
-  
+
     instance = instances[i];
     if (instance.type === type) return instance;
   }
@@ -131,22 +134,22 @@ function getInstance(type, partnerId) { // partner id not yet supported (will be
 
 // Main and image
 app.get('/', require('connect-ensure-login').ensureLoggedIn(), function(req, res, next) {
-  
+
   // Need to clear videoWrapper
   killInstance(ProcessWrapper.ProcessType.Video);
-  
+
   // if (videoWrapper.running)
   //   videoWrapper.kill();
-  //  
-  
+  //
+
   res.render('index', { title: 'WiZR Demo' });
 });
 
 app.get('/index', require('connect-ensure-login').ensureLoggedIn(), function(req, res, next) {
-  
+
   if (!imageWrapper)
     imageWrapper = new ProcessWrapper(image_props);
-    
+
   // Need to clear videoWrapper
   killInstance(ProcessWrapper.ProcessType.Video);
   // if (videoWrapper.running)
@@ -158,125 +161,124 @@ app.get('/index', require('connect-ensure-login').ensureLoggedIn(), function(req
 app.post('/index', upload.single('photo'), require('connect-ensure-login').ensureLoggedIn(), function (req, res, next) {
 
     var supportedTypes = ['.jpg', '.jpeg', '.png', '.bmp'];
-    
+
   if(!req.file || !req.file.size)
     return res.render('index', { error: 'No Image Selected' });
 
   var file = req.file.filename;
   var img = "/uploads/" + file;
   var idx = supportedTypes.indexOf(require('path').extname(file).toLowerCase());
-  
+
   if (idx < 0)
-    return res.render('index', { error: 'Format not supported. We currently support .jpg, .jpeg, .png and .bmp in this demo.' }); 
-  
-  imageWrapper.run(image_props.outputFolder + file, function(err, results)  {   
- 
+    return res.render('index', { error: 'Format not supported. We currently support .jpg, .jpeg, .png and .bmp in this demo.' });
+
+  imageWrapper.run(image_props.outputFolder + file, function(err, results)  {
+
   if (err) return res.render('index', {title: "WiZR Analytics Demo", error: "An Error Occured", isError: true});
-  
+
   results = JSON.parse(results);
   results.image = img;
-  return res.render('index', { title: 'WiZR Analytics Demo', 
-    results : results, 
-    image : results.image, 
-    boxes : JSON.stringify(results.Rectangles), 
+  return res.render('index', { title: 'WiZR Analytics Demo',
+    results : results,
+    image : results.image,
+    boxes : JSON.stringify(results.Rectangles),
     boxCount : results.Persons });
-  
+
  });
- 
+
 });
 
-// Video 
+// Video
 app.get('/video', require('connect-ensure-login').ensureLoggedIn(), function(req, res, next) {
-    
+
     if (!videoWrapper)
       videoWrapper = new ProcessWrapper(video_props);
-      
+
     killInstance(ProcessWrapper.ProcessType.Video);
-    
+
     res.render('video', { title: 'WiZR Demo' });
 });
 
 app.get("/video/reset", require('connect-ensure-login').ensureLoggedIn(), function(req, res) {
-  
+
   killInstance(ProcessWrapper.ProcessType.Video);
-  
+
   var imgPath = __dirname + "\\uploads\\demourl.jpg";
-  // Remove image 
+  // Remove image
   try {
-      
+
     FileSystem.stat(imgPath, function(err, stat) {
-        
+
         if (err === null) {
-            
+
             FileSystem.unlinkSync(imgPath);
         }
-        
+
     });
 
   } catch(e) {
-      
+
       console.log(e);
-  }  
+  }
 
   return res.send({success:true});
-  
+
 });
 
 
 app.post('/video', require('connect-ensure-login').ensureLoggedIn(), function (req, res, next) {
-  
+
   var videoUrl = req.body.txtVideoUrl;
-  
+
   if (!videoUrl)
     return res.render("video", {error: "Invalid Video Url"});
-    
+
   CameraChecker.validateCamera({url :videoUrl}, function(err, r, t) {
-    
+
     if (err) {
         return res.render("video", {results : false, error: err});
-    }  
-      
-    videoWrapper.run(req.body.txtVideoUrl, function(err, results)  {   
-    
+    }
+
+    videoWrapper.run(req.body.txtVideoUrl, function(err, results)  {
+
         var streamUrl = "/uploads/demourl.jpg";
-        
+
         if (err) {
-            
+
             killInstance(ProcessWrapper.ProcessType.Video);
              return res.render("video", {results : false, error: err});
-             
+
         }
-        
-        return res.render("video", {results:true, videoImageUrl : streamUrl, isError:false, videoUrl : videoUrl});  
-    });      
-  });  
+
+        return res.render("video", {results:true, videoImageUrl : streamUrl, isError:false, videoUrl : videoUrl});
+    });
+  });
 });
 
-app.post('/video/health', require('connect-ensure-login').ensureLoggedIn(), function (req, res, next) { 
-    
+app.post('/video/health', require('connect-ensure-login').ensureLoggedIn(), function (req, res, next) {
+
   var videoUrl = req.body.videoUrl;
   if (!videoUrl)
     return res.send({error: "Invalid Video Url"});
-  
+
   CameraChecker.validateCamera({url :videoUrl}, function(err, r, t) {
-    
+
     if (err) {
         return res.send({results : false, error: "The camera stream is unavailable or the camera can not be found"});
-    }  
-      
-    return res.send({results:true});  
-  });  
-    
-});    
+    }
 
-app.get('/help', function(req, res, next) {
-  
-  if(!req.files || !req.files.length)
-    return res.render('help', { title: 'WiZR Demo' });
-   
-  res.render('help', { title: 'WiZR Demo' });
+    return res.send({results:true});
+  });
+
 });
 
+app.get('/help', function(req, res, next) {
+
+  if(!req.files || !req.files.length)
+    return res.render('help', { title: 'WiZR Demo' });
+
+  res.render('help', { title: 'WiZR Demo' });
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
