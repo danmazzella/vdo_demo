@@ -99,7 +99,7 @@ var url = require('url');
             var httpMethod = params.url.substring(0, 5).toLowerCase() === "https" ? https : http;
             var supportedTypes = ["image/jpeg", "multipart/x-mixed-replace", "boundary"];
             var error_url = "Invalid Camera URL";
-                        
+            //var u = url.parse(params.url);            
             var request = httpMethod.get(params.url, function(response) {
                 
                 if (response.statusCode !== 200) { 

@@ -14,9 +14,10 @@ var ProcessWrapper = function(props) {
 	this.running = false;
 	this.processType = props.processType;
 	this.partnerId = props.partnerId ? props.partnerId : null;
+    this.execArgs = props.execArgs;
 	
 	try {
-		this.childProcess = spawn(this.executable, [this.execFile]);
+		this.childProcess = spawn(this.executable, [this.execFile], this.execArgs);
 	} catch(e) {
 		console.log(e);
 	}	
@@ -31,7 +32,7 @@ ProcessWrapper.ProcessType = {
 
 ProcessWrapper.prototype.reconnect = function(){
 	try {
-		this.childProcess = spawn(this.executable, [this.execFile]);
+		this.childProcess = spawn(this.executable, [this.execFile], this.execArgs);
 		if (this.processType == ProcessWrapper.ProcessType.Video) this.running = false;
 	} catch(e) {
 		console.log(e);
@@ -47,26 +48,35 @@ ProcessWrapper.prototype.run = function(file, cb) {
 	
 	this.childProcess.stdout.on("data", function(data) {
 		
+        console.log(data+"");
+        
 		if (!data)
 			return cb("child process returned no data", null);
 		
-		return cb(null, data+"");
+        
+        
+		if (inst.args.noResult === false) return cb(null, data+"");
 		
 	});
 	
 	this.childProcess.on("end", function(output)  {
 		console.log('end');
 	});
+    
+    // this.childProcess.stderr.on("data", function(data) {
+    //     console.log((data+"").split("\n"));
+    // });
 
-	this.childProcess.on("exit", function(exitCode) {
+	this.childProcess.on("exit", function(exitCode, a, b) {
 		inst.reconnect();
+        //console.log("exit", a, b);
 		console.log("Exit (" + exitCode + ")");
 	});
 	
 	try {
         this.childProcess.stdin.write(file + "\n", function(err) {
             inst.childProcess.stdin.end();	
-            if (inst.args.noResult) {
+            if (inst.args.noResult && file.startsWith("2;")===false) {
                 inst.running = true;
                 return cb();	
             }

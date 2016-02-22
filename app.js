@@ -87,6 +87,9 @@ var image_props = {
    outputFolder : "C:\\wizr_demo\\vdo_demo\\uploads\\",
    executable : 'python',
    execFile:  "c:\\wizr_demo\\py-faster-rcnn\\tools\\demo1.py",
+   execArgs : {
+     cwd:  "c:\\wizr_demo\\py-faster-rcnn\\tools\\" 
+   },
    args : {
      noResult : false
    },
@@ -96,7 +99,10 @@ var image_props = {
 var video_props = {
    outputFolder : "C:\\wizr_demo\\vdo_demo\\uploads\\",
    executable : 'python',
-   execFile:  "c:\\wizr_demo\\py-faster-rcnn\\tools\\demo3.py",
+   execFile:  "c:\\wizr_demo\\py-faster-rcnn\\tools\\demo4.py",
+   execArgs : {
+     cwd:  "c:\\wizr_demo\\py-faster-rcnn\\tools\\" 
+   },
    args : {
      noResult : true
    },
@@ -105,10 +111,11 @@ var video_props = {
 
 var partners = [1, 2];
 
-var imageWrapper = new ProcessWrapper(image_props);
+//var imageWrapper = new ProcessWrapper(image_props);
 var videoWrapper = new ProcessWrapper(video_props);
 
-instances.push(imageWrapper, videoWrapper);
+//instances.push(imageWrapper, videoWrapper);
+instances.push(videoWrapper);
 
 function killInstance(type, partnerId) {
 
@@ -138,17 +145,19 @@ app.get('/', require('connect-ensure-login').ensureLoggedIn(), function(req, res
   // Need to clear videoWrapper
   killInstance(ProcessWrapper.ProcessType.Video);
 
-  // if (videoWrapper.running)
-  //   videoWrapper.kill();
-  //
+  if (videoWrapper.running)
+    videoWrapper.kill();
+  
 
   res.render('index', { title: 'WiZR Demo' });
 });
 
 app.get('/index', require('connect-ensure-login').ensureLoggedIn(), function(req, res, next) {
 
-  if (!imageWrapper)
-    imageWrapper = new ProcessWrapper(image_props);
+//   if (!imageWrapper)
+//     imageWrapper = new ProcessWrapper(image_props);
+  if (!videoWrapper)
+    videoWrapper = new ProcessWrapper(image_props);
 
   // Need to clear videoWrapper
   killInstance(ProcessWrapper.ProcessType.Video);
@@ -172,11 +181,13 @@ app.post('/index', upload.single('photo'), require('connect-ensure-login').ensur
   if (idx < 0)
     return res.render('index', { error: 'Format not supported. We currently support .jpg, .jpeg, .png and .bmp in this demo.' });
 
-  imageWrapper.run(image_props.outputFolder + file, function(err, results)  {
+  //imageWrapper.run(image_props.outputFolder + file, function(err, results)  {
+  videoWrapper.run("2;" + image_props.outputFolder + file, function(err, results)  {    
 
   if (err) return res.render('index', {title: "WiZR Analytics Demo", error: "An Error Occured", isError: true});
 
   results = JSON.parse(results);
+  //var results = {};
   results.image = img;
   return res.render('index', { title: 'WiZR Analytics Demo',
     results : results,
@@ -238,8 +249,13 @@ app.post('/video', require('connect-ensure-login').ensureLoggedIn(), function (r
     if (err) {
         return res.render("video", {results : false, error: err});
     }
+    
+    var mode = 0;
+    if (req.body.bsub) {
+        mode = parseInt(req.body.bsub);
+    }
 
-    videoWrapper.run(req.body.txtVideoUrl, function(err, results)  {
+    videoWrapper.run(mode+";" + req.body.txtVideoUrl, function(err, results)  {
 
         var streamUrl = "/uploads/demourl.jpg";
 
@@ -249,8 +265,8 @@ app.post('/video', require('connect-ensure-login').ensureLoggedIn(), function (r
              return res.render("video", {results : false, error: err});
 
         }
-
-        return res.render("video", {results:true, videoImageUrl : streamUrl, isError:false, videoUrl : videoUrl});
+        var use_bsub = mode === 1 ? true : false;
+        return res.render("video", {results:true, videoImageUrl : streamUrl, isError:false, videoUrl : videoUrl, use_bsub : use_bsub});
     });
   });
 });
@@ -266,7 +282,7 @@ app.post('/video/health', require('connect-ensure-login').ensureLoggedIn(), func
     if (err) {
         return res.send({results : false, error: "The camera stream is unavailable or the camera can not be found"});
     }
-
+    
     return res.send({results:true});
   });
 

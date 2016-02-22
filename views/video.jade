@@ -13,6 +13,12 @@ block content
         .upload-file
           input(type="button", value="SUBMIT", class="videoButton" ).submit-video-button
           input(type="button", value="RESET VIDEO", class="resetVideoButton").reset-video-button  
+        .options(style="padding-top:65px")
+            if (use_bsub)
+                input(type="checkbox", customui="true" name="bsub", id="bsub", value="1", checked)
+            else
+                input(type="checkbox", customui="true" name="bsub", id="bsub", value="1")
+            |  Use Tracking. 
     .error
         | #{error}
        input(type="hidden", value="#{isError}")         
