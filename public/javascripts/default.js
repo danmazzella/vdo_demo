@@ -47,9 +47,9 @@ $(function() {
 				if (tenMinutes >= (1000 * 60 * 10)) endVideo();
 								
 				if (showHealth) rtVid.attr("src",$("#hidVidoeImageUrl").val() + "?" + Math.random());
-				tenMinutes += 200;	
+				tenMinutes += 300;	
                 
- 			}, 200);
+ 			}, 300);
 		}
 		
         function endVideo() {

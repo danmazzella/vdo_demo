@@ -11,6 +11,7 @@ var ProcessWrapper = function(props) {
 	this.executable = props.executable; 
 	this.args = props.args;	
 	this.execFile = props.execFile;  
+    this.modelPath = props.modelPath;
 	this.running = false;
 	this.processType = props.processType;
 	this.partnerId = props.partnerId ? props.partnerId : null;
@@ -55,7 +56,7 @@ ProcessWrapper.prototype.run = function(file, cb) {
 		
         
         
-		if (inst.args.noResult === false) return cb(null, data+"");
+		if (inst.args.noResult === true) return cb(null, data+"");
 		
 	});
 	

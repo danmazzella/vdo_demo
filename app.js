@@ -99,9 +99,10 @@ var image_props = {
 var video_props = {
    outputFolder : "C:\\wizr_demo\\vdo_demo\\uploads\\",
    executable : 'python',
-   execFile:  "c:\\wizr_demo\\py-faster-rcnn\\tools\\demo4.py",
+   execFile:  "C:\\wizr_demo\\demoProdV2\\PythonSample\\main.py",
+   modelPath : "C:\\wizr_demo\\demoProdV2\\Models\\",
    execArgs : {
-     cwd:  "c:\\wizr_demo\\py-faster-rcnn\\tools\\" 
+     cwd:  "C:\\wizr_demo\\demoProdV2\\PythonSample\\" 
    },
    args : {
      noResult : true
@@ -111,7 +112,7 @@ var video_props = {
 
 var partners = [1, 2];
 
-//var imageWrapper = new ProcessWrapper(image_props);
+var imageWrapper = new ProcessWrapper(image_props);
 var videoWrapper = new ProcessWrapper(video_props);
 
 //instances.push(imageWrapper, videoWrapper);
@@ -178,11 +179,11 @@ app.post('/index', upload.single('photo'), require('connect-ensure-login').ensur
   var img = "/uploads/" + file;
   var idx = supportedTypes.indexOf(require('path').extname(file).toLowerCase());
 
-  if (idx < 0)
+  if (idx < 0) 
     return res.render('index', { error: 'Format not supported. We currently support .jpg, .jpeg, .png and .bmp in this demo.' });
 
-  //imageWrapper.run(image_props.outputFolder + file, function(err, results)  {
-  videoWrapper.run("2;" + image_props.outputFolder + file, function(err, results)  {    
+  imageWrapper.run(image_props.outputFolder + file, function(err, results)  {
+  //videoWrapper.run("2;" + image_props.outputFolder + file, function(err, results)  {    
 
   if (err) return res.render('index', {title: "WiZR Analytics Demo", error: "An Error Occured", isError: true});
 
@@ -250,23 +251,23 @@ app.post('/video', require('connect-ensure-login').ensureLoggedIn(), function (r
         return res.render("video", {results : false, error: err});
     }
     
-    var mode = 0;
-    if (req.body.bsub) {
-        mode = parseInt(req.body.bsub);
-    }
+   
+    var algo = parseInt(req.body.algorithm);
 
-    videoWrapper.run(mode+";" + req.body.txtVideoUrl, function(err, results)  {
+    var execParams = algo + ";" + req.body.txtVideoUrl + ";" +  video_props.modelPath + ";demourl.jpg";
 
-        var streamUrl = "/uploads/demourl.jpg";
+    videoWrapper.run(execParams, function(err, results)  {
 
+    //var streamUrl = "/uploads/demourl.jpg";
+        var streamUrl = "https://turingvc.blob.core.windows.net/wizrdemo/demourl.jpg";
         if (err) {
 
             killInstance(ProcessWrapper.ProcessType.Video);
              return res.render("video", {results : false, error: err});
 
         }
-        var use_bsub = mode === 1 ? true : false;
-        return res.render("video", {results:true, videoImageUrl : streamUrl, isError:false, videoUrl : videoUrl, use_bsub : use_bsub});
+        var use_bsub = algo === 1 ? true : false;
+        return res.render("video", {results:true, videoImageUrl : streamUrl, isError:false, videoUrl : videoUrl, use_bsub : use_bsub, algorithm : algo});
     });
   });
 });

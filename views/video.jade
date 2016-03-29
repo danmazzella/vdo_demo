@@ -14,11 +14,32 @@ block content
           input(type="button", value="SUBMIT", class="videoButton" ).submit-video-button
           input(type="button", value="RESET VIDEO", class="resetVideoButton").reset-video-button  
         .options(style="padding-top:65px")
-            if (use_bsub)
-                input(type="checkbox", customui="true" name="bsub", id="bsub", value="1", checked)
-            else
-                input(type="checkbox", customui="true" name="bsub", id="bsub", value="1")
-            |  Use Tracking. 
+            select(name="algorithm")
+                if (algorithm === 0)
+                    option(value=0, name="algorithm", selected) Moving Object
+                else 
+                    option(value=0, name="algorithm") Moving Object
+                    
+                if (algorithm === 1)
+                    option(value=1, name="algorithm", selected) Pedestrian
+                else
+                    option(value=1, name="algorithm") Pedestrian 
+                    
+                if (algorithm === 2)              
+                    option(value=2, name="algorithm", selected) Pedestrian & Head and Shoulder
+                else
+                    option(value=2, name="algorithm") Pedestrian & Head and Shoulds
+                
+                if (algorithm ===4)            
+                    option(value=4, name="algorithm", selected) Pedestrian Tracking
+                else
+                    option(value=4, name="algorithm") Pedestrian Tracking
+                           
+                // if (algorithm === 4)                
+                //     option(value=4, name="algorithm", selected) Pedestrian & Moving Object
+                // else  
+                //     option(value=4, name="algorithm") Pedestrian & Moving Object
+                         
     .error
         | #{error}
        input(type="hidden", value="#{isError}")         
