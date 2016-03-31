@@ -33,12 +33,15 @@ $(function() {
 
 		
         window.onbeforeunload = function () { endVideo();}
+        
         function endHealthCheck() { clearInterval(healthCheck); $(".error").html(""); showHealth=false}    
-		$(".file").bind("click", function() { $("#photo").trigger("click");});
+		
+        $(".file").bind("click", function() { $("#photo").trigger("click");});
                 
 		function startVideo() {
 			
 			$(".videoButton").attr("disabled", "").css("opacity", ".5");
+            $(".resetVideoButton").css("background-color", "red");
 			var rtVid = $("#rtVideo");
 		    startHealthCheck($("#txtVideoUrl").val());
               
@@ -49,7 +52,7 @@ $(function() {
 				if (showHealth) rtVid.attr("src",$("#hidVidoeImageUrl").val() + "?" + Math.random());
 				tenMinutes += 300;	
                 
- 			}, 300);
+ 			}, 500);
 		}
 		
         function endVideo() {
@@ -64,7 +67,7 @@ $(function() {
             var rtVid = $("#rtVideo");
             $(".videoButton").attr("disabled", "").css("opacity", ".5");
             rtVid.attr("src", '/images/loading_wizr.gif');
-            setTimeout(function() {startVideo();}, 5000);
+            setTimeout(function() {startVideo();}, 3000);
 			
 		}
         
@@ -115,7 +118,7 @@ $(function() {
                         updateHealthCheck("update", data.error);
                     } else {
                         
-                        updateHealthCheck(null, "Streaming: " + url);
+                        updateHealthCheck(null, "STREAMING: " + url +  " USING THE " + $("#algorithm option:selected").text().toUpperCase() + " ALGORITHM.");
                     }
                     
                 }).fail(function(a,b,c) {
@@ -187,4 +190,48 @@ $(function() {
 
 		}();
 	});
+    
+    // Slider
+
+       $( "#slider" ).slider({
+            value: $("#sensitivity").val(),
+            min: 1,
+            max: 10 ,
+            step: 1,
+            stop: function(event, ui) {
+                $("#sensitivity").val(ui.value);
+            }
+        })
+        .each(function() {
+            
+        var opt = $(this).data().uiSlider.options;
+        var vals = opt.max - opt.min;
+
+        for (var i = 0; i <= vals; i++) {
+            
+            var el;
+            
+            switch (i) {
+                case 0:
+                    
+                    el = $('<label>Least</label>').css('left',(i/vals*100)+'%');
+                    break;
+                
+                case 9:
+                
+                    el = $('<label>Most</label>').css('left',(i/vals*100)+'%');
+                    break;
+                
+                default:
+
+                    el = $('<label>'+(i+1)+'</label>').css('left',(i/vals*100)+'%');
+                    break;
+            }
+
+            $( "#slider" ).append(el);
+        }
+        });
+    
+    // End Slider
+    
 }); 

@@ -6,14 +6,10 @@ html
     link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css')
     link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css', crossorgin='anonymous')
     link(rel='stylesheet', href='/stylesheets/style.css')
-    script(src="https://code.jquery.com/jquery-2.1.1.min.js", type="text/javascript")
-    script(src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js", type="text/javascript")       
-    script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js", type="text/javascript")
-    
-    
+    link(href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css", rel='stylesheet', type='text/css')
+    script(src="http://code.jquery.com/jquery-1.10.2.js", type="text/javascript")
+    script(src="http://code.jquery.com/ui/1.10.4/jquery-ui.js", type="text/javascript")
     script(src="/javascripts/default.js", type="text/javascript")
-    
-    
   body
     .pageWidth
       .header
@@ -21,7 +17,7 @@ html
           a(href="/")
             img(src="/images/logo-1.png")
         .navigation
-          a(href="/index", id="1").active Image Upload
+          //a(href="/index", id="1").active Image Upload
           a(href="/video", id="2") Video Streaming
           a(href="/help", id="3") Contact Information    
       block content            

@@ -77,8 +77,7 @@ app.post('/login',
   passport.authenticate('local', { failureRedirect: '/login' }),
   function(req, res) {
 
-    console.log('something');
-    res.redirect('/');
+    res.redirect('/video');
   });
 
 console.log(ProcessWrapper.ProcessType);
@@ -149,8 +148,8 @@ app.get('/', require('connect-ensure-login').ensureLoggedIn(), function(req, res
   if (videoWrapper.running)
     videoWrapper.kill();
   
-
-  res.render('index', { title: 'WiZR Demo' });
+  return res.redirect('/video');
+  //res.render('index', { title: 'WiZR Demo' });
 });
 
 app.get('/index', require('connect-ensure-login').ensureLoggedIn(), function(req, res, next) {
@@ -164,8 +163,8 @@ app.get('/index', require('connect-ensure-login').ensureLoggedIn(), function(req
   killInstance(ProcessWrapper.ProcessType.Video);
   // if (videoWrapper.running)
   //   videoWrapper.kill();
-
-  res.render('index', { title: 'WiZR Demo' });
+ return res.redirect('/video');
+  //res.render('index', { title: 'WiZR Demo' });
 });
 
 app.post('/index', upload.single('photo'), require('connect-ensure-login').ensureLoggedIn(), function (req, res, next) {
@@ -208,7 +207,7 @@ app.get('/video', require('connect-ensure-login').ensureLoggedIn(), function(req
 
     killInstance(ProcessWrapper.ProcessType.Video);
 
-    res.render('video', { title: 'WiZR Demo' });
+    res.render('video', { title: 'WiZR Demo', sensitivity : 5 });
 });
 
 app.get("/video/reset", require('connect-ensure-login').ensureLoggedIn(), function(req, res) {
@@ -252,22 +251,28 @@ app.post('/video', require('connect-ensure-login').ensureLoggedIn(), function (r
     }
     
    
-    var algo = parseInt(req.body.algorithm);
+    var algorithmType = parseInt(req.body.algorithm);
+    if (algorithmType === "-1") algorithmType = 1;
 
-    var execParams = algo + ";" + req.body.txtVideoUrl + ";" +  video_props.modelPath + ";demourl.jpg";
+    var sensitivityType = parseInt(req.body.sensitivity);
+    if (!sensitivityType) sensitivityType = 5; // 10 less accurate and more false alarms 1 more accurate.  
+
+    var execParams = algorithmType + ";" + req.body.txtVideoUrl + ";" +  video_props.modelPath + ";demourl.jpg;" + sensitivityType;
 
     videoWrapper.run(execParams, function(err, results)  {
 
     //var streamUrl = "/uploads/demourl.jpg";
-        var streamUrl = "https://turingvc.blob.core.windows.net/wizrdemo/demourl.jpg";
+        var streamUrl = "https://turingvc.blob.core.windows.net/wizrdemo/demourl.jpg"; //"/uploads/demourl.jpg" //
         if (err) {
 
             killInstance(ProcessWrapper.ProcessType.Video);
              return res.render("video", {results : false, error: err});
 
         }
-        var use_bsub = algo === 1 ? true : false;
-        return res.render("video", {results:true, videoImageUrl : streamUrl, isError:false, videoUrl : videoUrl, use_bsub : use_bsub, algorithm : algo});
+        
+        var use_bsub = algorithmType === 1 ? true : false;
+        return res.render("video", {results:true, videoImageUrl : streamUrl, isError:false,
+            videoUrl : videoUrl, use_bsub : use_bsub, algorithm : algorithmType, sensitivity : sensitivityType});
     });
   });
 });

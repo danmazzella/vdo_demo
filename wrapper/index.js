@@ -56,7 +56,8 @@ ProcessWrapper.prototype.run = function(file, cb) {
 		
         
         
-		if (inst.args.noResult === true) return cb(null, data+"");
+		//if (inst.args.noResult === true) 
+        return cb(null, data+"");
 		
 	});
 	
