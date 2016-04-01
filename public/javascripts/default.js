@@ -67,8 +67,24 @@ $(function() {
             var rtVid = $("#rtVideo");
             $(".videoButton").attr("disabled", "").css("opacity", ".5");
             rtVid.attr("src", '/images/loading_wizr.gif');
-            setTimeout(function() {startVideo();}, 4000);
-			
+                       
+                       
+            var imgLoader = setInterval(function() {
+            
+                    var img = new Image();
+                    $(img).on('load', function() {
+                        
+                        clearInterval(this);
+                        clearInterval(imgLoader);
+                        startVideo();
+                        
+                    });    
+                
+                    img.src = $("#hidVidoeImageUrl").val();                 
+         
+                }, 1000);           
+
+	            //$("#hidVidoeImageUrl").val()
 		}
         
         $("#imgForm").bind("submit", function() {
@@ -83,6 +99,7 @@ $(function() {
                 return true;
             });            
         });
+        
         
         
         

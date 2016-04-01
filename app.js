@@ -239,34 +239,37 @@ app.get("/video/reset", require('connect-ensure-login').ensureLoggedIn(), functi
 
 app.post('/video', require('connect-ensure-login').ensureLoggedIn(), function (req, res, next) {
 
-  var videoUrl = req.body.txtVideoUrl;
-
-  if (!videoUrl)
-    return res.render("video", {error: "Invalid Video Url"});
-
-  CameraChecker.validateCamera({url :videoUrl}, function(err, r, t) {
-
-    if (err) {
-        return res.render("video", {results : false, error: err});
-    }
-    
+    var videoUrl = req.body.txtVideoUrl;
     var filename = String(Math.random()).split(".")[1] + ".jpg";
     var algorithmType = parseInt(req.body.algorithm);
+    
     if (algorithmType === -1) algorithmType = 1;
 
     var sensitivityType = parseInt(req.body.sensitivity);
-    if (!sensitivityType) sensitivityType = 5; // 10 less accurate and more false alarms 1 more accurate.  
+    
+    if (!sensitivityType) sensitivityType = 5; // 10 less accurate and more false alarms 1 more accurate. 
+ 
+    if (!videoUrl)
+        return res.render("video", {error: "Invalid Video Url", sensitivity : sensitivityType});
 
+  CameraChecker.validateCamera({url :videoUrl}, function(err, r, t) {
+
+
+    
+    if (err) {
+        return res.render("video", {results : false, error: err, sensitivity : sensitivityType });
+    }
+    
     var execParams = algorithmType + "^" + req.body.txtVideoUrl + "^" +  video_props.modelPath + "^" + filename + "^" + sensitivityType;
 
     videoWrapper.run(execParams, function(err, results)  {
 
     //var streamUrl = "/uploads/demourl.jpg";
-        var streamUrl = "https://turingvc.blob.core.windows.net/wizrdemo/" + filename; //"/uploads/demourl.jpg" //
+        var streamUrl = "https://turingvc.blob.core.windows.net/wizrdemo/" + filename;
         if (err) {
 
             killInstance(ProcessWrapper.ProcessType.Video);
-             return res.render("video", {results : false, error: err});
+             return res.render("video", {results : false, error: err, sensitivity : sensitivityType});
 
         }
         
