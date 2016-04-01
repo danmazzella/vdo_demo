@@ -214,23 +214,23 @@ app.get("/video/reset", require('connect-ensure-login').ensureLoggedIn(), functi
 
   killInstance(ProcessWrapper.ProcessType.Video);
 
-  var imgPath = __dirname + "\\uploads\\demourl.jpg";
+//  var imgPath = __dirname + "\\uploads\\demourl.jpg";
   // Remove image
-  try {
+//   try {
 
-    FileSystem.stat(imgPath, function(err, stat) {
+//     FileSystem.stat(imgPath, function(err, stat) {
 
-        if (err === null) {
+//         if (err === null) {
 
-            FileSystem.unlinkSync(imgPath);
-        }
+//             FileSystem.unlinkSync(imgPath);
+//         }
 
-    });
+//     });
 
-  } catch(e) {
+//   } catch(e) {
 
-      console.log(e);
-  }
+//       console.log(e);
+//   }
 
   return res.send({success:true});
 
@@ -250,19 +250,19 @@ app.post('/video', require('connect-ensure-login').ensureLoggedIn(), function (r
         return res.render("video", {results : false, error: err});
     }
     
-   
+    var filename = String(Math.random()).split(".")[1] + ".jpg";
     var algorithmType = parseInt(req.body.algorithm);
-    if (algorithmType === "-1") algorithmType = 1;
+    if (algorithmType === -1) algorithmType = 1;
 
     var sensitivityType = parseInt(req.body.sensitivity);
     if (!sensitivityType) sensitivityType = 5; // 10 less accurate and more false alarms 1 more accurate.  
 
-    var execParams = algorithmType + ";" + req.body.txtVideoUrl + ";" +  video_props.modelPath + ";demourl.jpg;" + sensitivityType;
+    var execParams = algorithmType + ";" + req.body.txtVideoUrl + ";" +  video_props.modelPath + ";" + filename + ";" + sensitivityType;
 
     videoWrapper.run(execParams, function(err, results)  {
 
     //var streamUrl = "/uploads/demourl.jpg";
-        var streamUrl = "https://turingvc.blob.core.windows.net/wizrdemo/demourl.jpg"; //"/uploads/demourl.jpg" //
+        var streamUrl = "https://turingvc.blob.core.windows.net/wizrdemo/" + filename; //"/uploads/demourl.jpg" //
         if (err) {
 
             killInstance(ProcessWrapper.ProcessType.Video);

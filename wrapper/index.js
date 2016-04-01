@@ -47,6 +47,18 @@ ProcessWrapper.prototype.run = function(file, cb) {
 	if (!file || !this.childProcess)
 		return cb("File or Executable Path Missing", null);
 	
+    
+    this.childProcess.stdout.on("error", function(data) {
+        
+        console.log(data+"");
+    });
+    
+    this.childProcess.stderr.on("data", function(data) {
+        
+        console.log(data+"");
+        
+    });
+    
 	this.childProcess.stdout.on("data", function(data) {
 		
         console.log(data+"");
@@ -65,9 +77,9 @@ ProcessWrapper.prototype.run = function(file, cb) {
 		console.log('end');
 	});
     
-    // this.childProcess.stderr.on("data", function(data) {
-    //     console.log((data+"").split("\n"));
-    // });
+    this.childProcess.stderr.on("data", function(data) {
+        console.log((data+"").split("\n"));
+    });
 
 	this.childProcess.on("exit", function(exitCode, a, b) {
 		inst.reconnect();
@@ -78,7 +90,7 @@ ProcessWrapper.prototype.run = function(file, cb) {
 	try {
         this.childProcess.stdin.write(file + "\n", function(err) {
             inst.childProcess.stdin.end();	
-            if (inst.args.noResult && file.startsWith("2;")===false) {
+            if (inst.args.noResult) {
                 inst.running = true;
                 return cb();	
             }
