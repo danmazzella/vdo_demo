@@ -257,7 +257,7 @@ app.post('/video', require('connect-ensure-login').ensureLoggedIn(), function (r
     var sensitivityType = parseInt(req.body.sensitivity);
     if (!sensitivityType) sensitivityType = 5; // 10 less accurate and more false alarms 1 more accurate.  
 
-    var execParams = algorithmType + ";" + req.body.txtVideoUrl + ";" +  video_props.modelPath + ";" + filename + ";" + sensitivityType;
+    var execParams = algorithmType + "^" + req.body.txtVideoUrl + "^" +  video_props.modelPath + "^" + filename + "^" + sensitivityType;
 
     videoWrapper.run(execParams, function(err, results)  {
 
