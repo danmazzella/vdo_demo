@@ -67,7 +67,7 @@ $(function() {
             var rtVid = $("#rtVideo");
             $(".videoButton").attr("disabled", "").css("opacity", ".5");
             rtVid.attr("src", '/images/loading_wizr.gif');
-            setTimeout(function() {startVideo();}, 3000);
+            setTimeout(function() {startVideo();}, 4000);
 			
 		}
         

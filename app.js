@@ -98,10 +98,10 @@ var image_props = {
 var video_props = {
    outputFolder : "C:\\wizr_demo\\vdo_demo\\uploads\\",
    executable : 'python',
-   execFile:  "C:\\wizr_demo\\demoProdV2\\PythonSample\\main.py",
-   modelPath : "C:\\wizr_demo\\demoProdV2\\Models\\",
+   execFile:  "C:\\wizr_demo\\py-faster-rcnn\\tools\\demoProdV2\\PythonSample\\main.py",
+   modelPath : "C:\\wizr_demo\\py-faster-rcnn\\tools\\demoProdV2\\Models\\",
    execArgs : {
-     cwd:  "C:\\wizr_demo\\demoProdV2\\PythonSample\\" 
+     cwd:  "C:\\wizr_demo\\py-faster-rcnn\\tools\\demoProdV2\\PythonSample\\" 
    },
    args : {
      noResult : true
