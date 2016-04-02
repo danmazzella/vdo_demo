@@ -44,6 +44,10 @@ $(function() {
             $(".resetVideoButton").css("background-color", "red");
 			var rtVid = $("#rtVideo");
 		    startHealthCheck($("#txtVideoUrl").val());
+            
+            $('html, body').animate({
+                scrollTop: $(".image").offset().top
+            }, 2000);            
               
 			vidTimer = setInterval(function() {
 				
