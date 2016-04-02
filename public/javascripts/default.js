@@ -158,6 +158,7 @@ $(function() {
 			$.get("/video/reset", function(data) {
                 
 				$(".videoButton").removeAttr("disabled").css("opacity", 1);
+                $(".reset-video-button").css("background-color", "#BBBDBF");
 				console.log(data);
 			});
 			
