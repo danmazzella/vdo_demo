@@ -207,7 +207,7 @@ app.get('/video', require('connect-ensure-login').ensureLoggedIn(), function(req
 
     killInstance(ProcessWrapper.ProcessType.Video);
 
-    res.render('video', { title: 'WiZR Demo', sensitivity : 5 });
+    res.render('video', { title: 'WiZR Demo', sensitivity : 500 });
 });
 
 app.get("/video/reset", require('connect-ensure-login').ensureLoggedIn(), function(req, res) {
@@ -245,9 +245,9 @@ app.post('/video', require('connect-ensure-login').ensureLoggedIn(), function (r
     
     if (algorithmType === -1) algorithmType = 1;
 
-    var sensitivityType = parseInt(req.body.sensitivity);
+    var sensitivityType = req.body.sensitivity === "1001" ? 10 : parseInt(req.body.sensitivity[0]);
     
-    if (!sensitivityType) sensitivityType = 5; // 10 less accurate and more false alarms 1 more accurate. 
+    // 10 less accurate and more false alarms 1 more accurate. 
  
     if (!videoUrl)
         return res.render("video", {error: "Invalid Video Url", sensitivity : sensitivityType});
