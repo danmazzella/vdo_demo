@@ -250,14 +250,14 @@ app.post('/video', require('connect-ensure-login').ensureLoggedIn(), function (r
     // 10 less accurate and more false alarms 1 more accurate. 
  
     if (!videoUrl)
-        return res.render("video", {error: "Invalid Video Url", sensitivity : sensitivityType});
+        return res.render("video", {error: "Invalid Video Url", sensitivity : parseInt(req.body.sensitivity)});
 
   CameraChecker.validateCamera({url :videoUrl}, function(err, r, t) {
 
 
     
     if (err) {
-        return res.render("video", {results : false, error: err, sensitivity : sensitivityType });
+        return res.render("video", {results : false, error: err, sensitivity : parseInt(req.body.sensitivity) });
     }
     
     var execParams = algorithmType + "^" + req.body.txtVideoUrl + "^" +  video_props.modelPath + "^" + filename + "^" + sensitivityType;
@@ -269,13 +269,13 @@ app.post('/video', require('connect-ensure-login').ensureLoggedIn(), function (r
         if (err) {
 
             killInstance(ProcessWrapper.ProcessType.Video);
-             return res.render("video", {results : false, error: err, sensitivity : sensitivityType});
+             return res.render("video", {results : false, error: err, sensitivity : parseInt(req.body.sensitivity)});
 
         }
         
         var use_bsub = algorithmType === 1 ? true : false;
         return res.render("video", {results:true, videoImageUrl : streamUrl, isError:false,
-            videoUrl : videoUrl, use_bsub : use_bsub, algorithm : algorithmType, sensitivity : sensitivityType});
+            videoUrl : videoUrl, use_bsub : use_bsub, algorithm : algorithmType, sensitivity : parseInt(req.body.sensitivity)});
     });
   });
 });
