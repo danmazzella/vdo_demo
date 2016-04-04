@@ -3,51 +3,47 @@ $(function() {
         
     var Cameras = [
     
-    // Russian Mall
-    "http://217.79.9.143/mjpg/video.mjpg",
-    "http://217.79.9.142/mjpg/video.mjpg",
-    "http://217.79.9.145/mjpg/video.mjpg",
-    
-    "http://79.129.43.179/img/video.mjpeg",
-    "http://87.245.118.88:1024/img/video.mjpeg",
-    "http://108.58.45.2:8083/img/video.mjpeg",
-    "http://83.235.183.96:1024/img/video.mjpeg",
-    
-    // Campus
-    "http://hncam1.hn.psu.edu/axis-cgi/mjpg/video.cgi",
-
-    // Cafe
-    "http://50.199.22.21:84/axis-cgi/jpg/image.cgi",
-    "http://hncam1.hn.psu.edu/axis-cgi/jpg/image.cgi",
-    "http://149.43.156.190/axis-cgi/jpg/image.cgi",
-    "http://c-cam.uchicago.edu/axis-cgi/jpg/image.cgi",
-    "http://camibk.egos.co.at/axis-cgi/jpg/image.cgi",
-    "http://videostream.mdh-insurance.co.uk:208/axis-cgi/jpg/image.cgi",
-    "http://212.47.24.208:83/axis-cgi/jpg/image.cgi",
-    "http://194.171.57.42/axis-cgi/jpg/image.cgi",
-    "http://haasg056-cam.cs.purdue.edu/axis-cgi/jpg/image.cgi",
-    "http://gorguzecam02.engin.umich.edu/axis-cgi/jpg/image.cgi",
-    "http://217.79.9.145/axis-cgi/jpg/image.cgi",
-    "http://217.79.9.143/axis-cgi/jpg/image.cgi",
-    "http://65.183.153.11/axis-cgi/jpg/image.cgi",
-    "http://himom.kings.edu/axis-cgi/jpg/image.cgi",
-    "http://50.199.22.21:84/axis-cgi/jpg/image.cgi",
-    "http://158.142.178.131/axis-cgi/jpg/image.cgi",
-    "http://94.72.9.250/axis-cgi/jpg/image.cgi",
-    "http://147.253.140.110/axis-cgi/jpg/image.cgi",
-    "http://hncam1.hn.psu.edu/axis-cgi/jpg/image.cgi",
-    "http://209.159.224.176/axis-cgi/jpg/image.cgi",
-    "http://eastcam1.centralia.edu/axis-cgi/jpg/image.cgi",
-    "http://148.61.97.229/axis-cgi/jpg/image.cgi",
-    "http://149.43.156.190/axis-cgi/jpg/image.cgi",
-    "http://mail.bekescsaba.hu:8080/axis-cgi/jpg/image.cgi",
-    "http://c-cam.uchicago.edu/axis-cgi/jpg/image.cgi",
-    
+        {key: "http://217.79.9.143/mjpg/video.mjpg", value: "Mall - MJPEG"},
+        {key: "http://217.79.9.142/mjpg/video.mjpg", value : "Mall 2 - MJPEG"},
+        {key: "http://217.79.9.145/mjpg/video.mjpg", value: "Mall 3 - MJPEG"},
+        {key: "http://79.129.43.179/img/video.mjpeg", value: "Butcher Shop - MJPEG"},
+        {key: "http://87.245.118.88:1024/img/video.mjpeg", value: "Bar - MJPEG"},
+        {key: "http://108.58.45.2:8083/img/video.mjpeg", value: "Shop - MJPEG"},
+        {key: "http://83.235.183.96:1024/img/video.mjpeg", value: "Store - MJPEG"},
+        {key: "http://hncam1.hn.psu.edu/axis-cgi/mjpg/video.cgi", value: "Campus - MJPEG"},
+        {key: "http://hncam1.hn.psu.edu/axis-cgi/jpg/image.cgi", value: "Campus -  IMAGE"},
+        {key: "http://50.199.22.21:84/axis-cgi/jpg/image.cgi", value : "Cafe 1 - IMAGE"},
+        {key: "http://149.43.156.190/axis-cgi/jpg/image.cgi", value : "Campus 2 - IMAGE"},
+        {key: "http://c-cam.uchicago.edu/axis-cgi/jpg/image.cgi", value : "Campus 3 - IMAGE"},
+        {key: "http://videostream.mdh-insurance.co.uk:208/axis-cgi/jpg/image.cgi", value : "Office - IMAGE"},
+        {key: "http://212.47.24.208:83/axis-cgi/jpg/image.cgi", value : "Mall 4 - IMAGE"},
+        {key: "http://194.171.57.42/axis-cgi/jpg/image.cgi", value : "Cafe 2 - IMAGE"},
+        {key: "http://haasg056-cam.cs.purdue.edu/axis-cgi/jpg/image.cgi", value : "Campus Computer Lab - IMAGE"},
+        {key: "http://gorguzecam02.engin.umich.edu/axis-cgi/jpg/image.cgi", value : "Campus Machine Shop - IMAGE"},
+        {key: "http://217.79.9.145/axis-cgi/jpg/image.cgi", value : "Mall 5 - IMAGE"},
+        {key: "http://217.79.9.143/axis-cgi/jpg/image.cgi", value : "Mall 6 - IMAGE"},
+        {key: "http://65.183.153.11/axis-cgi/jpg/image.cgi", value : "Cafe 3 - IMAGE"},
+        {key: "http://himom.kings.edu/axis-cgi/jpg/image.cgi", value : "Campus Hall - IMAGE"},
+        {key: "http://50.199.22.21:84/axis-cgi/jpg/image.cgi", value : "Cafe 4 - IMAGE"},
+        {key: "http://158.142.178.131/axis-cgi/jpg/image.cgi", value : "Campus Parking Log - IMAGE"},
+        {key: "http://94.72.9.250/axis-cgi/jpg/image.cgi", value : "Campus 4 - IMAGE"},
+        {key: "http://147.253.140.110/axis-cgi/jpg/image.cgi", value : "Campus 5 - IMAGE"},
+        {key: "http://209.159.224.176/axis-cgi/jpg/image.cgi", value : "Street - IMAGE"},
+        {key: "http://eastcam1.centralia.edu/axis-cgi/jpg/image.cgi", value : "Campus 6 - IMAGE"},
+        {key: "http://148.61.97.229/axis-cgi/jpg/image.cgi", value : "Campus 7 - IMAGE"},
+        {key: "http://149.43.156.190/axis-cgi/jpg/image.cgi", value : "Campus 8 - IMAGE"},
+        {key: "http://mail.bekescsaba.hu:8080/axis-cgi/jpg/image.cgi", value : "Street 2 - IMAGE"},
+        {key: "http://c-cam.uchicago.edu/axis-cgi/jpg/image.cgi", value : "Campus 9 - IMAGE"}
+        
     ];
     
     //Auto Complete
     $("#txtVideoUrl").autocomplete({
-        source: Cameras
+        source: Cameras,
+        select : function(evt, ui) {
+            evt.preventDefault();
+            $("#txtVideoUrl").val(ui.item.key);
+        } 
     })  ;      
             
             
