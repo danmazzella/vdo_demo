@@ -11,29 +11,58 @@ block content
         input(type="hidden", id="sensitivity", name="sensitivity", value="#{sensitivity}")   
         .videoDiv
           input(type="text", class="videoFile", id="txtVideoUrl", name="txtVideoUrl", placeholder="Video Url (Image Snapshot)", value="#{!videoUrl ? '' : videoUrl}")
+        
         .options
-            select(name="algorithm", id="algorithm")
-                option(value="-1", style="text-indent:20px;")
-                    | -- Algorithm --
-                if (algorithm === 0)
-                    option(value=0, name="algorithm", selected) Moving Object
-                else 
-                    option(value=0, name="algorithm") Moving Object
+            
+            if (algorithm === 1)
+                input(type="radio", name="algorithm", value=1, id="Pedestrian", checked) 
+            else
+                input(type="radio", name="algorithm", value=1, id="Pedestrian")                 
+            label(for="Pedestrian") Pedestrian
+            
+            if (algorithm === 0)            
+                input(type="radio", name="algorithm", value=0, id="MovingObject", checked) 
+            else
+                input(type="radio", name="algorithm", value=0, id="MovingObject")
+            label(for="MovingObject") Moving Object
+            
+            br
+            
+            if (algorithm === 2)
+                input(type="radio", name="algorithm", value=2, id="PedestrianHeadAndShoulders", cheked) 
+            else
+                input(type="radio", name="algorithm", value=2, id="PedestrianHeadAndShoulders")             
+            label(for="PedestrianHeadAndShoulders") Pedestrian & Head and Shoulder
+            
+            if (algorithm === 4)
+                input(type="radio", name="algorithm", value=4, id="PedestrianTracking", checked) 
+            else
+                input(type="radio", name="algorithm", value=4, id="PedestrianTracking") 
+            
+            label(for="PedestrianTracking") Pedestrian Tracking 
+        
+            // select(name="algorithm", id="algorithm")
+            //     option(value="-1", style="text-indent:20px;")
+            //         | -- Algorithm --
+            //     if (algorithm === 0)
+            //         option(value=0, name="algorithm", selected) Moving Object
+            //     else 
+            //         option(value=0, name="algorithm") Moving Object
                     
-                if (algorithm === 1)
-                    option(value=1, name="algorithm", selected) Pedestrian
-                else
-                    option(value=1, name="algorithm") Pedestrian    
+            //     if (algorithm === 1)
+            //         option(value=1, name="algorithm", selected) Pedestrian
+            //     else
+            //         option(value=1, name="algorithm") Pedestrian    
 
-                if (algorithm === 2)              
-                    option(value=2, name="algorithm", selected) Pedestrian & Head and Shoulder
-                else
-                    option(value=2, name="algorithm") Pedestrian & Head and Shoulder
+            //     if (algorithm === 2)              
+            //         option(value=2, name="algorithm", selected) Pedestrian & Head and Shoulder
+            //     else
+            //         option(value=2, name="algorithm") Pedestrian & Head and Shoulder
                 
-                if (algorithm ===4)            
-                    option(value=4, name="algorithm", selected) Pedestrian Tracking
-                else
-                    option(value=4, name="algorithm") Pedestrian Tracking
+            //     if (algorithm ===4)            
+            //         option(value=4, name="algorithm", selected) Pedestrian Tracking
+            //     else
+            //         option(value=4, name="algorithm") Pedestrian Tracking
     .description
         |Sensitivity                
     div(id="slider")

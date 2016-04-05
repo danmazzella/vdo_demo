@@ -180,7 +180,7 @@ input[type=file] {
 
 .videoFile {
     
-  width: 400px;
+  width: 510px;
   height: 41px;
   background-color: #F1F1F2;
   border-radius: 50px;
@@ -214,9 +214,8 @@ IMG.displayed {
 
 .inputs .options {
     float:left;
-    width: 565px;
+    margin-left:144px;
     height:41px;
-    line-height: 35px;
 }    
 
 .inputs .options > select {
@@ -225,6 +224,10 @@ IMG.displayed {
     height:41px;
     margin-right: 15px;
 }    
+
+.options > label {
+    padding: 5px;
+}
 .upload-file {
     width: 450px;
     margin-top:55px;

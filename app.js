@@ -207,7 +207,7 @@ app.get('/video', require('connect-ensure-login').ensureLoggedIn(), function(req
 
     killInstance(ProcessWrapper.ProcessType.Video);
 
-    res.render('video', { title: 'WiZR Demo', sensitivity : 500 });
+    res.render('video', { title: 'WiZR Demo', sensitivity : 500, algorithm : 1 });
 });
 
 app.get("/video/reset", require('connect-ensure-login').ensureLoggedIn(), function(req, res) {
