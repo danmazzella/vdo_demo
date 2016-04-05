@@ -11,7 +11,8 @@ block content
         input(type="hidden", id="sensitivity", name="sensitivity", value="#{sensitivity}")   
         .videoDiv
           input(type="text", class="videoFile", id="txtVideoUrl", name="txtVideoUrl", placeholder="Video Url (Image Snapshot)", value="#{!videoUrl ? '' : videoUrl}")
-        
+          a(href="javascript:void(0);", class="clearUrl")
+            icon().fa.fa-times.fa-3  
         .options
             
             if (algorithm === 1)
@@ -19,7 +20,9 @@ block content
             else
                 input(type="radio", name="algorithm", value=1, id="Pedestrian")                 
             label(for="Pedestrian") Pedestrian
-            
+           
+            br
+           
             if (algorithm === 0)            
                 input(type="radio", name="algorithm", value=0, id="MovingObject", checked) 
             else
@@ -33,6 +36,8 @@ block content
             else
                 input(type="radio", name="algorithm", value=2, id="PedestrianHeadAndShoulders")             
             label(for="PedestrianHeadAndShoulders") Pedestrian & Head and Shoulder
+            
+            br
             
             if (algorithm === 4)
                 input(type="radio", name="algorithm", value=4, id="PedestrianTracking", checked) 

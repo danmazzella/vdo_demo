@@ -46,7 +46,10 @@ $(function() {
         } 
     })  ;      
             
-            
+    $(".clearUrl").bind("click", function() {
+        $("#txtVideoUrl").val("");
+        endVideo();
+    });       
             
             
             
