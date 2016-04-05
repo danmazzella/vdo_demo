@@ -211,7 +211,7 @@ IMG.displayed {
 }
 
 .inputs .videoDiv > A {
-    top:9px;
+    top:6px;
     position:relative;
     color: #4BC3CA;
 }
@@ -271,5 +271,5 @@ IMG.displayed {
 
 
 .fa {
-    font-size: 45px;
+    font-size: 35px;
 }
