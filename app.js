@@ -250,14 +250,14 @@ app.post('/video', require('connect-ensure-login').ensureLoggedIn(), function (r
     // 10 less accurate and more false alarms 1 more accurate. 
  
     if (!videoUrl)
-        return res.render("video", {error: "Invalid Video Url", sensitivity : parseInt(req.body.sensitivity)});
+        return res.render("video", {error: "Invalid Video Url", sensitivity : parseInt(req.body.sensitivity), algorithm : algorithmType});
 
   CameraChecker.validateCamera({url :videoUrl}, function(err, r, t) {
 
 
     
     if (err) {
-        return res.render("video", {results : false, error: err, sensitivity : parseInt(req.body.sensitivity) });
+        return res.render("video", {results : false, error: err, sensitivity : parseInt(req.body.sensitivity), algorithm : algorithmType });
     }
     
     var execParams = algorithmType + "^" + req.body.txtVideoUrl + "^" +  video_props.modelPath + "^" + filename + "^" + sensitivityType;
@@ -269,7 +269,7 @@ app.post('/video', require('connect-ensure-login').ensureLoggedIn(), function (r
         if (err) {
 
             killInstance(ProcessWrapper.ProcessType.Video);
-             return res.render("video", {results : false, error: err, sensitivity : parseInt(req.body.sensitivity)});
+             return res.render("video", {results : false, error: err, sensitivity : parseInt(req.body.sensitivity), algorithm : algorithmType});
 
         }
         
