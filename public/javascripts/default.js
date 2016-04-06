@@ -8,7 +8,7 @@ $(function() {
         {key: "http://217.79.9.145/mjpg/video.mjpg", value: "Mall 3 - MJPEG"},
         {key: "http://79.129.43.179/img/video.mjpeg", value: "Butcher Shop - MJPEG"},
         {key: "http://87.245.118.88:1024/img/video.mjpeg", value: "Bar - MJPEG"},
-        {key: "http://108.58.45.2:8083/img/video.mjpeg", value: "Shop - MJPEG"},
+        //{key: "http://108.58.45.2:8083/img/video.mjpeg", value: "Shop - MJPEG"},
         {key: "http://83.235.183.96:1024/img/video.mjpeg", value: "Store - MJPEG"},
         {key: "http://hncam1.hn.psu.edu/axis-cgi/mjpg/video.cgi", value: "Campus - MJPEG"},
         {key: "http://hncam1.hn.psu.edu/axis-cgi/jpg/image.cgi", value: "Campus -  IMAGE"},
