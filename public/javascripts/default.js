@@ -141,7 +141,7 @@ $(function() {
             
             var rtVid = $("#rtVideo");
             $(".videoButton").attr("disabled", "").css("opacity", ".5");
-            rtVid.attr("src", '/images/loading_wizr.gif');
+            rtVid.attr("src", '/images/owl2.gif');
                        
                        
             var imgLoader = setInterval(function() {
