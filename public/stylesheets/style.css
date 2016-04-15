@@ -16,7 +16,11 @@ body {
 }
 
 a {
-  color: #00B7FF;
+  color: #139deb;
+}
+
+a > icon {
+  color: #139deb;
 }
 
 .image {
@@ -67,7 +71,6 @@ a {
 
 .navigation a {
   font-size: 14px;
-  color:#4BC3CA;
   margin-right: 50px;
   font-weight: 500;
   letter-spacing: 1px;
@@ -124,7 +127,7 @@ input[type=file] {
 
 .submit-button {
   padding: 10px 40px 10px 40px;
-  background-color: #4BC3CA;
+  background-color: #139deb;
   border-radius: 50px;
   border: 0px;
   color:#fff;
@@ -139,7 +142,7 @@ input[type=file] {
 .submit-login-button {
   
   padding: 10px 40px 10px 40px;
-  background-color: #4BC3CA;
+  background-color: #139deb;
   border-radius: 50px;
   border: 0px;
   color:#fff;
@@ -154,7 +157,7 @@ input[type=file] {
 
 .submit-video-button {
   padding: 10px 40px 10px 40px;
-  background-color: #4BC3CA;
+  background-color: #139deb;
   border-radius: 50px;
   border: 0px;
   color:#fff;
@@ -267,9 +270,10 @@ IMG.displayed {
     margin-bottom:15px;
 }
 
-/*Slider*/
-
 
 .fa {
     font-size: 35px;
 }
+
+/*Slider*/
+

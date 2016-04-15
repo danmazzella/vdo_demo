@@ -330,6 +330,10 @@ $(function() {
         }
         });
     
+    
+    
+    
+    
     // End Slider
     
 }); 
