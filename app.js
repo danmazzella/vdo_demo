@@ -265,7 +265,8 @@ app.post('/video', require('connect-ensure-login').ensureLoggedIn(), function (r
     videoWrapper.run(execParams, function(err, results)  {
 
     //var streamUrl = "/uploads/demourl.jpg";
-        var streamUrl = "https://turingvc.blob.core.windows.net/wizrdemo/" + filename;
+        // var streamUrl = "https://turingvc.blob.core.windows.net/wizrdemo/" + filename;
+        var streamUrl = "https://s3-us-west-1.amazonaws.com/stone.wizr.com/" + filename;
         if (err) {
 
             killInstance(ProcessWrapper.ProcessType.Video);
