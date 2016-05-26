@@ -7,7 +7,7 @@ var records = [
     { id: 6, username: 'adt', password: 'na', displayName: 'david', emails: [ { value: 'adt@wizr.com' } ] },
     { id: 7, username: 'netgear', password: 'na', displayName: 'david', emails: [ { value: 'netgear@wizr.com' } ] },
     { id: 8, username: 'pelco', password: 'na', displayName: 'david', emails: [ { value: 'pelco@wizr.com' } ] },  
-    { id: 9, username: 'comcast', password: 'na', displayName: 'david', emails: [ { value: 'comcast@wizr.com' } ] }    
+    { id: 9, username: 'comcast', password: 'na', displayName: 'david', emails: [ { value: 'comcast@wizr.com' } ] }, 
     { id: 10, username: 'adtadt', password: 'na', displayName: 'david', emails: [ { value: 'adt@wizr.com' } ] }    
 ];
 
